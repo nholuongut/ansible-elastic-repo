@@ -1,0 +1,6 @@
+---
+- hosts: test
+  roles:
+    - role: '../../.'
+      elastic_repo__branch: 6.x
+      elastic_repo__local_gpgkey: true

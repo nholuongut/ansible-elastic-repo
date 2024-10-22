@@ -1,0 +1,26 @@
+---
+
+- name: 'Debian: Install APT dependencies'
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - gnupg
+    - ca-certificates
+
+- name: 'Debian: Add local elastic.co GPG key'
+  apt_key:
+    file: "/tmp/{{ elastic_gpg_file }}"
+  when: elastic_repo__local_gpgkey
+
+- name: 'Debian: Add elastic.co GPG key'
+  apt_key:
+    url: "{{ elastic_gpg_url }}"
+  when: not elastic_repo__local_gpgkey
+
+- name: 'Debian: Add elastic.co APT repository'
+  apt_repository:
+    repo: "{{ elastic_apt_repo }}"
+    state: present
+    update_cache: yes
